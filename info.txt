@@ -1,0 +1,8 @@
+Nombre del curso: Lenguajes de programación.
+Número de semestre y año lectivo: 1er semestre del 2025.
+Nombre de los Estudiantes:
+ - Jimena Méndez Morales, 2023113347.
+ - Ricardo Arce Aguilar. 2023215990.
+Número del proyecto programado: #4.
+Fecha de entrega: 25/06/2025.
+Estatus de la entrega: MuyBuena.
