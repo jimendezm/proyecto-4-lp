@@ -1,4 +1,4 @@
-
+USE luikikart;
 DELIMITER //
 CREATE PROCEDURE AgregarPartida (
     IN p_identificador VARCHAR(100),
