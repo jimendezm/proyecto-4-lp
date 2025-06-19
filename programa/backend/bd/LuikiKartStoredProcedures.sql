@@ -1,15 +1,14 @@
 USE luikikart;
 DELIMITER //
 CREATE PROCEDURE AgregarPartida (
-    IN p_identificador VARCHAR(100),
     IN p_tipo ENUM('vs', 'contrarreloj'),
     IN p_pista VARCHAR(100),
     IN p_numVueltas INT,
     IN p_numJugadores INT
 )
 BEGIN
-    INSERT INTO Partida (identificador, tipo, pista, numVueltas, numJugadores, estado)
-    VALUES (p_identificador, p_tipo, p_pista, p_numVueltas, p_numJugadores, 'espera');
+    INSERT INTO Partida ( tipo, pista, numVueltas, numJugadores, estado)
+    VALUES ( p_tipo, p_pista, p_numVueltas, p_numJugadores, 'espera');
 END //
 DELIMITER ;
 
