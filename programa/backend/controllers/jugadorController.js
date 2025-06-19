@@ -30,3 +30,13 @@ export const actualizarPosicionJugador = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const asignarJugadorPartida = async (req, res) => {
+  const { idJugador, idPartida } = req.body;
+  try {
+    await pool.query('CALL AsignarJugadorPartida(?, ?)', [idJugador, idPartida]);
+    res.status(200).json({ message: 'Jugador asignado a partida' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

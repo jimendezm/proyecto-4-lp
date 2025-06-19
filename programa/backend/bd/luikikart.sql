@@ -14,7 +14,7 @@ CREATE TABLE Partida (
 
 CREATE TABLE Jugador (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    idPartida INT NOT NULL,
+    idPartida INT NULL,
     nickname VARCHAR(100) NOT NULL,
     posicion INT NULL,
     FOREIGN KEY (idPartida) REFERENCES Partida(id)

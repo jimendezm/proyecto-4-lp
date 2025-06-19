@@ -9,7 +9,8 @@ import {
 import {
   agregarJugador,
   obtenerJugadores,
-  actualizarPosicionJugador
+  actualizarPosicionJugador,
+  asignarJugadorPartida
 } from '../controllers/jugadorController.js';
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.get('/partidas/disponibles', obtenerPartidasDisponibles);
 router.post('/jugadores', agregarJugador);
 router.get('/jugadores/:idPartida', obtenerJugadores);
 router.put('/jugadores/:id/posicion', actualizarPosicionJugador);
+router.post('/jugadores/asignar', asignarJugadorPartida);
 
 export default router;

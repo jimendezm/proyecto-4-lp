@@ -83,4 +83,18 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE AsignarJugadorPartida(
+  IN pIdJugador   INT,
+  IN pIdPartida   INT
+)
+BEGIN
+  UPDATE Jugador
+    SET idPartida = pIdPartida
+  WHERE id = pIdJugador;
+END //
+
+DELIMITER ;
+
 
