@@ -4,7 +4,7 @@ export const crearPartida = async (req, res) => {
   const { identificador, tipo, pista, numVueltas, numJugadores } = req.body;
   try {
     await pool.query('CALL AgregarPartida(?, ?, ?, ?, ?)', [
-      identificador, tipo, pista, numVueltas, numJugadores
+      tipo, pista, numVueltas, numJugadores
     ]);
     res.status(201).json({ message: 'Partida creada' });
   } catch (error) {

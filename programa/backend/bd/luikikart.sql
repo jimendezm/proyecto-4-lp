@@ -3,7 +3,6 @@ USE luikikart;
 
 CREATE TABLE Partida (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    identificador VARCHAR(100) NOT NULL UNIQUE,
     tipo ENUM('vs', 'contrarreloj') NOT NULL,
     pista VARCHAR(100) NOT NULL,
     numVueltas INT NOT NULL,
@@ -22,4 +21,3 @@ CREATE TABLE Jugador (
 
 CREATE USER 'luiki_user'@'localhost' IDENTIFIED BY 'luikipass';
 GRANT ALL PRIVILEGES ON luikikart.* TO 'luiki_user'@'localhost';
-

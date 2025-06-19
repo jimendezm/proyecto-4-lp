@@ -1,53 +1,50 @@
-// src/components/CreateGameModal.jsx
+// src/components/GameConfig.jsx
 import React, { useState, useContext } from 'react';
-import '../styles/GameConfig.css';
 import { useNavigate } from 'react-router-dom';
+import '../styles/GameConfig.css';
+import pista1Img from '../assets/pista1.png';
+import pista2Img from '../assets/pista2.png';
+import { SocketContext } from '../pages/SocketContext';
 
-/**
- * Props:
- *  - isOpen: boolean
- *  - pistas: array of { id, src, name }
- *  - onClose: function()
- */
-export default function GameConfig({ isOpen, pistas, onClose }) {
-  const { playerId } = useContext(PlayerContext);
+export default function GameConfig() {
+  const socket = useContext(SocketContext);
   const navigate = useNavigate();
+
+  // importadas y referenciadas directamente
+  const pistas = [
+    { id: 1, src: pista1Img, name: 'Pista 1' },
+    { id: 2, src: pista2Img, name: 'Pista 2' }
+  ];
+
   const [tipo, setTipo] = useState('vs');
-  const [pista, setPista] = useState(pistas[0]?.id || null);
+  const [pista, setPista] = useState(pistas[0].id);
   const [numVueltas, setNumVueltas] = useState(3);
   const [numJugadores, setNumJugadores] = useState(2);
   const [loading, setLoading] = useState(false);
-
-  if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // 1) Crear partida en backend
+      // 1) Crear partida en backend vía REST
       const resp = await fetch('http://localhost:3001/api/partidas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          identificador: `P-${Date.now()}`,
           tipo,
           pista,
           numVueltas,
           numJugadores
         })
       });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
       const data = await resp.json();
-      const newPartidaId = data.id || data.insertId || data.partidaId;
+      const newPartidaId = data.insertId || data.id || data.partidaId;
 
-      // 2) Asignar jugador a la nueva partida
-      await fetch('http://localhost:3001/api/jugadores/asignar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idJugador: playerId, idPartida: newPartidaId })
-      });
+      // 2) Emitir al WebSocket para unirse a la partida
+      socket.emit('joinPartida', { partidaId: newPartidaId });
 
       // 3) Navegar a la sala de juego
-      onClose();
       navigate(`/partida/${newPartidaId}`);
     } catch (err) {
       console.error('Error creando partida:', err);
@@ -58,10 +55,10 @@ export default function GameConfig({ isOpen, pistas, onClose }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content create-modal">
+    <div className="config-page">
+      <div className="config-content">
         <h2>Crear Partida</h2>
-        <form onSubmit={handleSubmit}>
+        <form className="config-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Tipo de juego:</label>
             <select value={tipo} onChange={e => setTipo(e.target.value)}>
@@ -107,12 +104,9 @@ export default function GameConfig({ isOpen, pistas, onClose }) {
             </div>
           </div>
 
-          <div className="modal-actions">
-            <button type="button" className="btn-secondary" onClick={onClose} disabled={loading}>
-              Cancelar
-            </button>
+          <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Creando...' : 'Agregar'}
+              {loading ? 'Creando...' : 'Crear Partida'}
             </button>
           </div>
         </form>
