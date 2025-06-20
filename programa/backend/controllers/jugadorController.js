@@ -40,3 +40,13 @@ export const asignarJugadorPartida = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const obtenerUltimoJugador = async (req, res) => {
+  try {
+    const [rows] = await pool.query('CALL ObtenerUltimoJugador()');
+    res.json(rows[0][0]); // solo el jugador más reciente
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+

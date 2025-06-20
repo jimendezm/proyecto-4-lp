@@ -1,0 +1,67 @@
+:root {
+  --color1: #151307;
+  --color2: #164524;
+  --color3: #e37d15;
+  --color4: #e7c43c;
+  --color5: #f4eb97;
+  --border-radius: 8px;
+  --transition: 0.3s ease;
+}
+
+/* Página completa */
+.list-games-page {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.list-games-page h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--color1);
+}
+
+/* Lista de partidas */
+.games-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Cada partida */
+.game-item {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  transition: transform var(--transition), border-color var(--transition);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.game-item:hover {
+  border-color: var(--color3);
+  transform: scale(1.01);
+}
+
+.game-item strong {
+  color: var(--color1);
+}
+
+/* Mensaje cuando no hay partidas */
+.no-games {
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .game-item {
+    font-size: 0.95rem;
+    padding: 1rem;
+  }
+}

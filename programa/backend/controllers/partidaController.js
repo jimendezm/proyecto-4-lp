@@ -42,3 +42,12 @@ export const obtenerPartidasDisponibles = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const obtenerUltimaPartida = async (req, res) => {
+  try {
+    const [rows] = await pool.query('CALL ObtenerUltimaPartida()');
+    res.json(rows[0][0]); // Devuelve solo el objeto de la última partida
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

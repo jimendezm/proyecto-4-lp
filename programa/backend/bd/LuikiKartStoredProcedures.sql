@@ -96,4 +96,25 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE ObtenerUltimoJugador()
+BEGIN
+  SELECT id, nickname, idPartida, posicion
+  FROM Jugador
+  ORDER BY id DESC
+  LIMIT 1;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE ObtenerUltimaPartida()
+BEGIN
+  SELECT *
+  FROM Partida
+  ORDER BY id DESC
+  LIMIT 1;
+END //
+DELIMITER ;
 

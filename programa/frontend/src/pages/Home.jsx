@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
@@ -8,13 +7,18 @@ export default function Home() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const { nickname } = state;
+  // Desestructuramos nickname e idJugador
+  const { nickname, idJugador } = state || {};
 
   useEffect(() => {
-    if (!nickname ) {
+    if (!nickname || !idJugador) {
       navigate('/');
     }
-  }, [navigate]);
+  }, [nickname, idJugador, navigate]);
+
+  const goTo = (path) => {
+    navigate(path, { state: { nickname, idJugador } });
+  };
 
   return (
     <div className="home-container">
@@ -27,10 +31,10 @@ export default function Home() {
       </div>
 
       <div className="menu">
-        <button onClick={() => navigate('/game-config')}>Crear Partida</button>
-        <button onClick={() => navigate('/unirse')}>Unirse a Partida</button>
-        <button onClick={() => navigate('/estadisticas')}>Ver Estadísticas</button>
-        <button onClick={() => navigate('/ranking')}>Ver Ranking</button>
+        <button onClick={() => goTo('/game-config')}>Crear Partida</button>
+        <button onClick={() => goTo('/unirse')}>Unirse a Partida</button>
+        <button onClick={() => goTo('/estadisticas')}>Ver Estadísticas</button>
+        <button onClick={() => goTo('/ranking')}>Ver Ranking</button>
       </div>
     </div>
   );

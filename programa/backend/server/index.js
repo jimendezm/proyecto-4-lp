@@ -36,17 +36,27 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Jugador conectado:', socket.id);
 
-  // Aquí agregás tus listeners personalizados, por ejemplo:
   socket.on('movimiento', (data) => {
     console.log('Movimiento recibido:', data);
-    // retransmitir a otros
     socket.broadcast.emit('movimientoJugador', data);
+  });
+
+  // 🆕 Cuando alguien se une a una partida
+  socket.on('joinPartida', ({ partidaId, jugadorId }) => {
+    console.log(`Jugador ${jugadorId} se unió a la partida ${partidaId}`);
+    
+    // Podés usar "rooms" si más adelante querés enviar eventos a todos los jugadores de una misma partida
+    socket.join(`partida-${partidaId}`);
+
+    // Avisar a otros jugadores que alguien se unió (opcional)
+    socket.to(`partida-${partidaId}`).emit('jugadorUnido', { jugadorId });
   });
 
   socket.on('disconnect', () => {
     console.log('Jugador desconectado:', socket.id);
   });
 });
+
 
 // Exponer instancia de io si la necesitás en otros módulos
 export { io };
