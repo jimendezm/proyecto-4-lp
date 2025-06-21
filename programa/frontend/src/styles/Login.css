@@ -1,3 +1,12 @@
+:root {
+  --color1: #151307;
+  --color2: #164524;
+  --color3: #e37d15;
+  --color4: #e7c43c;
+  --color5: #f4eb97;
+  --border-radius: 8px;
+  --transition: 0.3s ease;
+}
 /* Modal de ingreso de nickname */
 .login-modal {
   position: absolute;
@@ -32,6 +41,12 @@
 }
 .login-modal button:hover {
   background-color: var(--color1);
+}
+
+.login-modal h2 {
+  font-size: 1.5rem;
+  color: var(--color1);
+  margin-bottom: 1rem;
 }
 
 /* Título de bienvenida */
