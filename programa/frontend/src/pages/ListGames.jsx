@@ -47,7 +47,7 @@ export default function ListGames() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idJugador, idPartida })
       });
-      socket.emit("joinPartida", { idPartida, idJugador });
+      // socket.emit("joinPartida", { idPartida, idJugador });
 
       navigate('/lobby', { state: { idPartida, idJugador, nickname } });
     } catch (err) {

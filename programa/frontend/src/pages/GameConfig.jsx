@@ -60,7 +60,7 @@ export default function GameConfig() {
         })
       });
 
-      socket.emit("joinPartida", { idPartida: resPartida.id, idJugador });
+      // socket.emit("joinPartida", { idPartida: resPartida.id, idJugador });
       if (!resAsignar.ok) throw new Error('Error al asignar jugador a la partida');
 
       // 4) Redirigir (por ejemplo, al lobby)
