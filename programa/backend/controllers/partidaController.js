@@ -1,9 +1,9 @@
 import { pool } from '../bd/connection.js';
 
 export const crearPartida = async (req, res) => {
-  const { identificador, tipo, pista, numVueltas, numJugadores } = req.body;
+  const { tipo, pista, numVueltas, numJugadores } = req.body;
   try {
-    await pool.query('CALL AgregarPartida(?, ?, ?, ?, ?)', [
+    await pool.query('CALL AgregarPartida(?, ?, ?, ?)', [
       tipo, pista, numVueltas, numJugadores
     ]);
     res.status(201).json({ message: 'Partida creada' });

@@ -1,67 +1,99 @@
 :root {
-  --color1: #151307;
-  --color2: #164524;
-  --color3: #e37d15;
-  --color4: #e7c43c;
-  --color5: #f4eb97;
-  --border-radius: 8px;
+  --color1: #151307;     /* texto principal */
+  --color2: #164524;     /* borde hover */
+  --color3: #e37d15;     /* acento naranja */
+  --color4: #e7c43c;     /* amarillo brillante */
+  --color5: #fdf9e3;     /* fondo tarjetas */
+  --border-radius: 10px;
   --transition: 0.3s ease;
 }
-
-/* Página completa */
-.list-games-page {
-  padding: 2rem;
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #87ceeb, #ffffff); /* Gradiente cielo */
+  font-family: sans-serif;
 }
 
+
+/* Lista de partidas como grid de 2 columnas */
+.games-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  justify-content: center;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1000px; /* Ancho máximo para centrar */
+  overflow-y: auto; /* Permitir scroll si hay muchas partidas */
+}
+
+/* Ajuste del contenedor principal para centrar mejor */
+.list-games-page {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  max-width: 1000px; /* Aumentamos el ancho para permitir dos columnas */
+  padding: 2rem;
+  box-sizing: border-box;
+  margin: 2rem auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Título */
 .list-games-page h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: var(--color1);
 }
 
-/* Lista de partidas */
-.games-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
 
-/* Cada partida */
+/* Item de partida */
 .game-item {
-  background: #fff;
-  border: 2px solid #ddd;
+  background: var(--color5);
+  border: 2px solid var(--color2);
   border-radius: var(--border-radius);
   padding: 1.25rem;
   margin-bottom: 1rem;
   text-align: left;
-  transition: transform var(--transition), border-color var(--transition);
+  transition: transform var(--transition), background-color var(--transition), border-color var(--transition);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .game-item:hover {
   border-color: var(--color3);
-  transform: scale(1.01);
+  background-color: #fff4dd;
+  transform: translateY(-3px);
+}
+
+.game-item p {
+  margin: 0.3rem 0;
+  color: var(--color1);
+  font-weight: 500;
 }
 
 .game-item strong {
-  color: var(--color1);
+  color: var(--color3);
 }
 
-/* Mensaje cuando no hay partidas */
+/* Cuando no hay partidas */
 .no-games {
-  color: #666;
+  color: #555;
   font-style: italic;
   margin-top: 1rem;
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .game-item {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 1rem;
   }
 }

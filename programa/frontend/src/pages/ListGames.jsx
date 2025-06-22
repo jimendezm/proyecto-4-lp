@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SocketContext } from './SocketContext';
+import '../styles/ListGames.css';
 
 export default function ListGames() {
   const [partidas, setPartidas] = useState([]);
@@ -18,7 +19,6 @@ export default function ListGames() {
         const data = await res.json();
         setPartidas(data);
 
-        // Obtener cantidad de jugadores para cada partida
         const jugadoresMap = {};
         for (const partida of data) {
           const resJugadores = await fetch(`http://localhost:3001/api/jugadores/${partida.id}`);
@@ -26,7 +26,6 @@ export default function ListGames() {
           jugadoresMap[partida.id] = jugadores.length;
         }
         setJugadoresPorPartida(jugadoresMap);
-
       } catch (err) {
         console.error('Error cargando partidas:', err);
       }
@@ -41,19 +40,15 @@ export default function ListGames() {
     }
 
     try {
-      // 1) Asignar jugador a la partida
       await fetch('http://localhost:3001/api/jugadores/asignar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idJugador, idPartida })
       });
 
-      // 2) Emitir por WebSocket (si aplica)
       socket.emit('joinPartida', { idPartida, idJugador });
 
-      // 3) Redirigir al lobby
       navigate('/lobby', { state: { idPartida, idJugador, nickname } });
-
     } catch (err) {
       console.error('Error al unirse a la partida:', err);
       alert('No se pudo unir a la partida. Intentá de nuevo.');
@@ -61,33 +56,23 @@ export default function ListGames() {
   };
 
   return (
-    <div className="list-games-page" style={{ padding: '2rem', maxWidth: '700px', margin: 'auto' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Partidas Disponibles</h2>
+    <div className="list-games-page">
+      <h2>Partidas Disponibles</h2>
 
       {partidas.length === 0 ? (
-        <p style={{ textAlign: 'center' }}>No hay partidas disponibles por ahora.</p>
+        <p className="no-games">No hay partidas disponibles por ahora.</p>
       ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
+        <ul className="games-list">
           {partidas.map((p) => (
             <li
               key={p.id}
+              className="game-item"
               onClick={() => handleJoin(p.id)}
-              style={{
-                cursor: 'pointer',
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                padding: '1rem',
-                marginBottom: '1rem',
-                backgroundColor: '#f9f9f9',
-                transition: '0.2s',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e6f7ff'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f9f9f9'}
             >
-              <strong>ID:</strong> {p.id} <br />
-              <strong>Tipo:</strong> {p.tipo} <br />
-              <strong>Pista:</strong> {p.pista} <br />
-              <strong>Jugadores:</strong> {jugadoresPorPartida[p.id] || 0}/{p.numJugadores}
+              <p><strong>ID:</strong> {p.id}</p>
+              <p><strong>Tipo:</strong> {p.tipo}</p>
+              <p><strong>Pista:</strong> {p.pista}</p>
+              <p><strong>Jugadores:</strong> {jugadoresPorPartida[p.id] || 0}/{p.numJugadores}</p>
             </li>
           ))}
         </ul>

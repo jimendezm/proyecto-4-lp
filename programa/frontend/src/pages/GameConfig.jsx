@@ -1,6 +1,5 @@
-// src/components/GameConfig.jsx
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/GameConfig.css';
 import pista1Img from '../assets/pista1.png';
 import pista2Img from '../assets/pista2.png';
@@ -19,6 +18,10 @@ export default function GameConfig() {
   const [numVueltas, setNumVueltas] = useState(3);
   const [numJugadores, setNumJugadores] = useState(2);
   const [loading, setLoading] = useState(false);
+  const { state } = useLocation();
+  
+    // Desestructuramos nickname e idJugador
+  const { nickname, idJugador } = state || {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +39,7 @@ export default function GameConfig() {
         })
       });
 
-      if (!resPartida.ok) throw new Error('Error al crear partida');
+      if (!resPartida.ok) throw new Error('Error al crear partida, Error:'+ resPartida.status);
 
       // 2) Obtener la última partida creada
       const resUltima = await fetch('http://localhost:3001/api/partidas/ultima');
@@ -58,7 +61,7 @@ export default function GameConfig() {
       if (!resAsignar.ok) throw new Error('Error al asignar jugador a la partida');
 
       // 4) Redirigir (por ejemplo, al lobby)
-      navigate('/lobby', { state: { idPartida, idJugador, nickname } });
+      navigate('/home', { state: { idPartida, idJugador, nickname } });
 
     } catch (err) {
       console.error(err);
