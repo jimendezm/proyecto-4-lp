@@ -30,6 +30,8 @@ app.get('/', (req, res) => {
   res.send('Servidor Luiki Kart activo 🚀');
 });
 
+let userKeys = {};
+
 // WebSocket events
 io.on('connection', (socket) => {
   console.log('Jugador conectado:', socket.id);
@@ -37,6 +39,20 @@ io.on('connection', (socket) => {
   socket.on('movimiento', (data) => {
     console.log('Movimiento recibido:', data);
     socket.broadcast.emit('movimientoJugador', data);
+  });
+
+  socket.on('gametick', ( id, keys ) => {
+    userKeys[id] = keys;
+  });
+
+  socket.on('prep-change', (data) => {
+    console.log('Game ready');
+    socket.broadcast.emit('ready', {});
+    setTimeout(() => {}, 100);
+    setInterval(() => {
+      console.log(userKeys);
+      userKeys = {};
+    }, 500);
   });
 
   socket.on('disconnect', () => {
