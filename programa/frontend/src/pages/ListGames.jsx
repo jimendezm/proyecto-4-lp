@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { SocketContext } from './SocketContext';
 import '../styles/ListGames.css';
 
@@ -8,9 +8,10 @@ export default function ListGames() {
   const [jugadoresPorPartida, setJugadoresPorPartida] = useState({});
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
+  const { state } = useLocation();
 
-  const nickname = localStorage.getItem('nickname');
-  const idJugador = localStorage.getItem('jugadorId');
+  // Desestructuramos nickname e idJugador
+  const { nickname, idJugador } = state || {};
 
   useEffect(() => {
     const fetchPartidas = async () => {
@@ -35,6 +36,7 @@ export default function ListGames() {
   }, []);
 
   const handleJoin = async (idPartida) => {
+    console.log('Unirse a la partida: ' + idPartida + ' con jugador: ' + idJugador);
     if (!nickname || !idJugador) {
       return alert('Faltan datos de sesión. Iniciá sesión nuevamente.');
     }
@@ -46,9 +48,7 @@ export default function ListGames() {
         body: JSON.stringify({ idJugador, idPartida })
       });
 
-      socket.emit('joinPartida', { idPartida, idJugador });
-
-      navigate('/lobby', { state: { idPartida, idJugador, nickname } });
+      navigate('/home', { state: { idPartida, idJugador, nickname } });
     } catch (err) {
       console.error('Error al unirse a la partida:', err);
       alert('No se pudo unir a la partida. Intentá de nuevo.');
