@@ -1,0 +1,98 @@
+
+
+/* 1) Variables de color */
+:root {
+  --color1: #151307;    /* texto principal */
+  --color2: #164524;    /* borde o destacado */
+  --color3: #e37d15;    /* acento naranja */
+  --color4: #e7c43c;    /* amarillo */
+  --color5: #f4eb97;    /* fondo suave */
+  --border-radius: 6px;
+  --transition: 0.2s ease-in-out;
+}
+
+/* 2) Contenedor general */
+.lobby-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* 3) Tarjeta de lobby */
+.lobby-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* 4) Títulos */
+.lobby-card h1,
+.lobby-card h2,
+.lobby-card h3 {
+  color: var(--color1);
+  margin-bottom: 0.75rem;
+}
+
+/* 5) Lista de jugadores */
+.jugadores-lista {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.jugador-item {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: var(--color5);
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--color2);
+  transition: background var(--transition);
+}
+
+.jugador-item span {
+  font-weight: 600;
+  color: var(--color1);
+}
+
+.estado-listo {
+  color: green;
+  font-weight: bold;
+}
+
+.estado-esperando {
+  color: gray;
+  font-style: italic;
+}
+
+/* 6) Botón de listo */
+.boton-listo {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: var(--color3);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.boton-listo:hover {
+  background-color: var(--color4);
+}
+
+.boton-listo:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}

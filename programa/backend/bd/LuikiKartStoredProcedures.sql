@@ -1,6 +1,5 @@
 USE luikikart;
 DELIMITER //
-DROP PROCEDURE IF EXISTS AgregarPartida;
 CREATE PROCEDURE AgregarPartida (
     IN p_tipo VARCHAR(20),
     IN p_pista VARCHAR(100),
@@ -12,8 +11,6 @@ BEGIN
     VALUES (p_tipo, p_pista, p_numVueltas, p_numJugadores, 'espera');
 END //
 DELIMITER ;
-
-
 
 DELIMITER //
 CREATE PROCEDURE AgregarJugador (
@@ -65,12 +62,11 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE ObtenerPartidasDisponibles ()
 BEGIN
-    SELECT id, identificador, tipo, pista, numVueltas, numJugadores, ganador
+    SELECT id, tipo, pista, numVueltas, numJugadores, ganador
     FROM Partida
     WHERE estado = 'espera';
 END //
 DELIMITER ;
-
 
 DELIMITER //
 CREATE PROCEDURE ActualizarEstadoPartida (

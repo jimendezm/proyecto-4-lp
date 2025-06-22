@@ -47,8 +47,9 @@ export default function ListGames() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idJugador, idPartida })
       });
+      socket.emit("joinPartida", { idPartida, idJugador });
 
-      navigate('/home', { state: { idPartida, idJugador, nickname } });
+      navigate('/lobby', { state: { idPartida, idJugador, nickname } });
     } catch (err) {
       console.error('Error al unirse a la partida:', err);
       alert('No se pudo unir a la partida. Intentá de nuevo.');

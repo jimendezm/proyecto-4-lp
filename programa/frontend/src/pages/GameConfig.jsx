@@ -41,6 +41,8 @@ export default function GameConfig() {
 
       if (!resPartida.ok) throw new Error('Error al crear partida, Error:'+ resPartida.status);
 
+      
+
       // 2) Obtener la última partida creada
       const resUltima = await fetch('http://localhost:3001/api/partidas/ultima');
       if (!resUltima.ok) throw new Error('No se pudo obtener la última partida');
@@ -58,10 +60,11 @@ export default function GameConfig() {
         })
       });
 
+      socket.emit("joinPartida", { idPartida: resPartida.id, idJugador });
       if (!resAsignar.ok) throw new Error('Error al asignar jugador a la partida');
 
       // 4) Redirigir (por ejemplo, al lobby)
-      navigate('/home', { state: { idPartida, idJugador, nickname } });
+      navigate('/lobby', { state: { idPartida, idJugador, nickname } });
 
     } catch (err) {
       console.error(err);
