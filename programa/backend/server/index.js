@@ -30,22 +30,53 @@ app.get('/', (req, res) => {
   res.send('Servidor Luiki Kart activo 🚀');
 });
 
+// 🧠 Almacenamos el estado de los jugadores por partida
+const estadoJugadoresGlobal = {};
+
 // WebSocket events
 io.on('connection', (socket) => {
   console.log('Jugador conectado:', socket.id);
 
-  socket.on('movimiento', (data) => {
-    console.log('Movimiento recibido:', data);
-    socket.broadcast.emit('movimientoJugador', data);
+  // Unirse a una partida
+  // 🎮 Alguien se une a una partida
+  socket.on('joinPartida', ({ idPartida, idJugador }) => {
+    const room = `partida_${idPartida}`;
+    socket.join(room);
+    console.log(`Jugador ${idJugador} se unió a ${room}`);
+
+    // Enviar el estado actual de los jugadores al nuevo jugador
+    const estados = estadoJugadoresGlobal[idPartida] || {};
+    socket.emit('actualizarEstadoJugadores', estados);
+
+    // Notificar al resto que alguien nuevo se unió
+    socket.to(room).emit('jugadorUnido', { idJugador });
   });
+
+  // ✅ Jugador marca que está listo
+  socket.on('jugadoresListos', ({ idPartida, jugadores }) => {
+    const room = `partida_${idPartida}`;
+    estadoJugadoresGlobal[idPartida] = jugadores;
+
+    console.log(`Estados actualizados en ${room}:`, jugadores);
+
+    // Notificar a todos el nuevo estado
+    io.to(room).emit('actualizarEstadoJugadores', jugadores);
+
+    // Verificar si todos están listos
+    const todosListos = Object.values(jugadores).every(val => val === true);
+    if (todosListos) {
+      console.log(`🎉 Todos listos en ${room}`);
+      io.to(room).emit('todosListos');
+    }
+  });
+
 
   socket.on('disconnect', () => {
     console.log('Jugador desconectado:', socket.id);
   });
 });
 
-
-// Exponer instancia de io si la necesitás en otros módulos
+// Exponer instancia de io 
 export { io };
 
 const PORT = process.env.PORT || 3001;

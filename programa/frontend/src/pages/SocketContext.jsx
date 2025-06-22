@@ -1,15 +1,6 @@
-// src/pages/SocketContext.jsx
-import React, { createContext } from 'react';
+
+import { createContext } from 'react';
 import { io } from 'socket.io-client';
 
-export const SocketContext = createContext();
-
-const socket = io('');
-
-export const SocketProvider = ({ children }) => {
-  return (
-    <SocketContext.Provider value={socket}>
-      {children}
-    </SocketContext.Provider>
-  );
-};
+export const socket = io('http://localhost:3001'); 
+export const SocketContext = createContext(socket);
