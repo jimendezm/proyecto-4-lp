@@ -1,0 +1,125 @@
+:root {
+  --color1: #151307;     /* texto principal */
+  --color2: #164524;     /* borde hover */
+  --color3: #e37d15;     /* acento naranja */
+  --color4: #e7c43c;     /* amarillo brillante */
+  --color5: #fdf9e3;     /* fondo tarjetas */
+  --border-radius: 10px;
+  --transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(to bottom, #87ceeb, #ffffff); /* Gradiente cielo */
+}
+
+/* Contenedor principal */
+.game-wrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+/* Sidebar con tabla de jugadores */
+.sidebar {
+  width: 250px;
+  background: var(--color5);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 1rem;
+  text-align: center;
+}
+
+.sidebar h3 {
+  color: var(--color1);
+  margin-bottom: 1rem;
+}
+
+.jugadores-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.jugadores-table th,
+.jugadores-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  color: var(--color1);
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin: 0 auto;
+}
+
+/* Zona central con la pista */
+.track-container {
+  position: relative;
+  flex: 1;
+  max-width: 960px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  background-color: #000;
+}
+
+.track-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Grid para ubicar a los jugadores */
+.overlay-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  grid-template-rows: repeat(25, 1fr);
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* los jugadores no bloquean clics */
+}
+
+.player-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+  font-size: 0.6rem;
+  border-radius: 4px;
+  padding: 2px;
+  text-shadow: 0 0 2px white;
+}
+
+.player-name {
+  background: rgba(255,255,255,0.7);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .game-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+
+  .track-container {
+    width: 100%;
+  }
+}
