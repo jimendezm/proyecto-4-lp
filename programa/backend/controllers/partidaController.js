@@ -51,3 +51,38 @@ export const obtenerUltimaPartida = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const obtenerEstadisticas = async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        p.id AS idPartida,
+        p.pista AS pista,
+        jp.nickname AS nickname,
+        jp.posicion
+      FROM Partida p
+      JOIN Jugador jp ON p.id = jp.idPartida
+      WHERE p.estado = 'finalizada'
+      ORDER BY p.id, jp.posicion ASC
+    `);
+
+    // Agrupar por partida
+    const partidas = {};
+    for (const row of rows) {
+      const { idPartida, pista, nickname, posicion } = row;
+      if (!partidas[idPartida]) {
+        partidas[idPartida] = {
+          id: idPartida,
+          pista,
+          jugadores: []
+        };
+      }
+      partidas[idPartida].jugadores.push({ nickname, posicion });
+    }
+
+    res.json(Object.values(partidas));
+  } catch (err) {
+    console.error('Error al obtener estadísticas:', err);
+    res.status(500).json({ error: 'Error al obtener estadísticas' });
+  }
+};
