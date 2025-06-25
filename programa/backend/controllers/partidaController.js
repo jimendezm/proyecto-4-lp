@@ -51,3 +51,12 @@ export const obtenerUltimaPartida = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const obtenerPartida = async (idPartida) => {
+  try {
+    const [rows] = await pool.query('CALL ObtenerPartida(?)', [idPartida]);
+    return rows[0][0];
+  } catch (error) {
+    return null;
+  }
+};

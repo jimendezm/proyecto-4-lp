@@ -67,9 +67,10 @@ io.on('connection', (socket) => {
     if (todosListos) {
       console.log(`🎉 Todos listos en ${room}`);
       io.to(room).emit('todosListos');
+      // Se da un segundo para que todos reciban el evento.
+      setTimeout(() => {}, 1000);
     }
   });
-
 
   socket.on('disconnect', () => {
     console.log('Jugador desconectado:', socket.id);

@@ -1,6 +1,6 @@
 USE luikikart;
 DELIMITER //
-CREATE PROCEDURE AgregarPartida (
+CREATE PROCEDURE IF NOT EXISTS AgregarPartida (
     IN p_tipo VARCHAR(20),
     IN p_pista VARCHAR(100),
     IN p_numVueltas INT,
@@ -13,7 +13,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE AgregarJugador (
+CREATE PROCEDURE IF NOT EXISTS AgregarJugador (
     IN p_idPartida INT,
     IN p_nickname VARCHAR(100)
 )
@@ -24,7 +24,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ObtenerJugadoresPorPartida (
+CREATE PROCEDURE IF NOT EXISTS ObtenerJugadoresPorPartida (
     IN p_idPartida INT
 )
 BEGIN
@@ -36,7 +36,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ActualizarGanador (
+CREATE PROCEDURE IF NOT EXISTS ActualizarGanador (
     IN p_idPartida INT,
     IN p_nicknameGanador VARCHAR(100)
 )
@@ -48,7 +48,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ActualizarPosicionJugador (
+CREATE PROCEDURE IF NOT EXISTS ActualizarPosicionJugador (
     IN p_idJugador INT,
     IN p_posicion INT
 )
@@ -60,7 +60,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ObtenerPartidasDisponibles ()
+CREATE PROCEDURE IF NOT EXISTS ObtenerPartidasDisponibles ()
 BEGIN
     SELECT id, tipo, pista, numVueltas, numJugadores, ganador
     FROM Partida
@@ -69,7 +69,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ActualizarEstadoPartida (
+CREATE PROCEDURE IF NOT EXISTS ActualizarEstadoPartida (
     IN p_idPartida INT,
     IN p_nuevoEstado ENUM('espera', 'en_proceso', 'finalizada')
 )
@@ -82,7 +82,7 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE PROCEDURE AsignarJugadorPartida(
+CREATE PROCEDURE IF NOT EXISTS AsignarJugadorPartida(
   IN pIdJugador   INT,
   IN pIdPartida   INT
 )
@@ -96,7 +96,7 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE PROCEDURE ObtenerUltimoJugador()
+CREATE PROCEDURE IF NOT EXISTS ObtenerUltimoJugador()
 BEGIN
   SELECT id, nickname, idPartida, posicion
   FROM Jugador
@@ -107,12 +107,21 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE ObtenerUltimaPartida()
+CREATE PROCEDURE IF NOT EXISTS ObtenerUltimaPartida()
 BEGIN
   SELECT *
   FROM Partida
   ORDER BY id DESC
   LIMIT 1;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE IF NOT EXISTS ObtenerPartida(IN p_idPartida INT)
+BEGIN
+  SELECT *
+  FROM Partida as p
+  WHERE p.id = p_idPartida;
 END //
 DELIMITER ;
 
