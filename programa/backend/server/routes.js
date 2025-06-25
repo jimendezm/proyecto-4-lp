@@ -4,6 +4,7 @@ import {
   actualizarEstadoPartida,
   actualizarGanador,
   obtenerPartidasDisponibles,
+  obtenerPartidas,
   obtenerUltimaPartida,
   obtenerEstadisticas,
   obtenerRanking
@@ -24,6 +25,7 @@ router.post('/partidas', crearPartida);
 router.put('/partidas/:id/estado', actualizarEstadoPartida);
 router.put('/partidas/:id/ganador', actualizarGanador);
 router.get('/partidas/disponibles', obtenerPartidasDisponibles);
+router.get('/partidas/juego', obtenerPartidas);
 router.get('/partidas/ultima', obtenerUltimaPartida);
 router.get('/partidas/estadisticas', obtenerEstadisticas);
 router.get('/partidas/ranking', obtenerRanking);

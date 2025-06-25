@@ -8,7 +8,8 @@ CREATE TABLE Partida (
     numVueltas INT NOT NULL,
     numJugadores INT NOT NULL,
     ganador VARCHAR(100) DEFAULT NULL,
-    estado ENUM('espera', 'en_proceso', 'finalizada') DEFAULT 'espera'
+    estado ENUM('espera', 'en_proceso', 'finalizada') DEFAULT 'espera',
+    tiempo TIME NULL
 );
 
 CREATE TABLE Jugador (
@@ -16,6 +17,7 @@ CREATE TABLE Jugador (
     idPartida INT NULL,
     nickname VARCHAR(100) NOT NULL,
     posicion INT NULL,
+    tiempo TIME NULL,
     FOREIGN KEY (idPartida) REFERENCES Partida(id)
 );
 

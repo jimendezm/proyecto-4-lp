@@ -69,6 +69,15 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE IF NOT EXISTS ObtenerPartidas ()
+BEGIN
+    SELECT id, tipo, pista, numVueltas, numJugadores, ganador
+    FROM Partida
+    WHERE estado = 'en_proceso';
+END //
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE IF NOT EXISTS ActualizarEstadoPartida (
     IN p_idPartida INT,
     IN p_nuevoEstado ENUM('espera', 'en_proceso', 'finalizada')

@@ -23,7 +23,7 @@ export default function Game() {
   useEffect(() => {
     const fetchPartidaYJugadores = async () => {
       try {
-        const resPartidas = await fetch('http://localhost:3001/api/partidas/disponibles');
+        const resPartidas = await fetch('http://localhost:3001/api/partidas/juego');
         const partidas = await resPartidas.json();
         const partida = partidas.find(p => p.id === idPartida);
         setPistaSeleccionada(partida.pista);

@@ -82,20 +82,34 @@ export default function Lobby() {
       setEstadoJugadores(nuevosEstados);
     });
 
-    socket.on('todosListos', () => {
+    socket.on('todosListos', async () => {
       if (jugadores.length < numJugadoresRequeridos) {
         mostrarError(`Aún faltan jugadores. Se requieren ${numJugadoresRequeridos}. Actualmente hay ${jugadores.length}.`);
-      }else {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Todos listos!',
-          text: 'La partida va a comenzar.',
-          confirmButtonColor: '#3085d6'
-        }).then(() => {
-          navigate('/game', { state: { idPartida, jugadores } });
-        });
-    }
+      } else {
+        try {
+          // Actualiza estado de la partida
+          await fetch(`http://localhost:3001/api/partidas/${idPartida}/estado`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ estado: 'en_proceso' })
+          });
+
+          // Luego navega al juego
+          Swal.fire({
+            icon: 'success',
+            title: '¡Todos listos!',
+            text: 'La partida va a comenzar.',
+            confirmButtonColor: '#3085d6'
+          }).then(() => {
+            navigate('/game', { state: { idPartida, jugadores } });
+          });
+        } catch (err) {
+          console.error('Error al actualizar estado de la partida:', err);
+          mostrarError('No se pudo iniciar la partida. Intenta de nuevo.');
+        }
+      }
     });
+
 
     return () => {
       socket.off('jugadorUnido');
