@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import pista1 from '../assets/pista1.png';
 import pista2 from '../assets/pista2.png';
 import '../styles/ListGames.css'; 
@@ -12,6 +12,12 @@ export default function Statistics() {
   const [partidas, setPartidas] = useState([]);
   const [partidaSeleccionada, setPartidaSeleccionada] = useState(null);
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { nickname, idJugador } = state || {};
+
+  const goTo = (path) => {
+    navigate(path, { state: { nickname, idJugador } });
+  };
 
   useEffect(() => {
     const fetchEstadisticas = async () => {
@@ -46,7 +52,7 @@ export default function Statistics() {
         </ul>
       )}
 
-      <button onClick={() => navigate('/')} className="btn-primary" style={{ marginTop: '1.5rem' }}>
+      <button onClick={() => goTo('/home')} className="btn-primary" style={{ marginTop: '1.5rem' }}>
         Volver al Inicio
       </button>
 

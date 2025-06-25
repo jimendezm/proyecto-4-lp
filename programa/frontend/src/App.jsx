@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './routes/router';
 import { socket, SocketContext } from './pages/SocketContext';

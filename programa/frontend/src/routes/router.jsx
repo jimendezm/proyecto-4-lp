@@ -6,6 +6,7 @@ import Login from '../pages/Login';
 import ListGames from '../pages/ListGames';
 import Lobby from '../pages/Lobby';
 import Statistics from '../pages/Statistics';
+import Ranking from '../pages/Ranking';
 
 export function Router() {
     return (
@@ -17,6 +18,7 @@ export function Router() {
             <Route path="/unirse" element={<ListGames />} />
             <Route path="/lobby" element={<Lobby />} />
             <Route path="/estadisticas" element={<Statistics />} />
+            <Route path="/ranking" element={<Ranking />} />
         </Routes>
     );
 }

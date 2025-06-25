@@ -86,3 +86,25 @@ export const obtenerEstadisticas = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener estadísticas' });
   }
 };
+
+export const obtenerRanking = async (req, res) => {
+  try {
+    const [result] = await pool.query(`
+      SELECT 
+        p.id AS idPartida,
+        p.pista,
+        p.numVueltas,
+        p.tiempo,
+        j.nickname AS ganador
+      FROM Partida p
+      JOIN Jugador j ON p.id = j.idPartida AND j.posicion = 1
+      WHERE p.estado = 'finalizada'
+      ORDER BY p.tiempo ASC
+    `);
+    res.json(result);
+  } catch (err) {
+    console.error('Error al obtener ranking:', err);
+    res.status(500).json({ error: 'Error al obtener ranking de partidas.' });
+  }
+};
+

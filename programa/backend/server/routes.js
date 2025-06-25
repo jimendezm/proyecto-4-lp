@@ -5,7 +5,8 @@ import {
   actualizarGanador,
   obtenerPartidasDisponibles,
   obtenerUltimaPartida,
-  obtenerEstadisticas
+  obtenerEstadisticas,
+  obtenerRanking
 } from '../controllers/partidaController.js';
 
 import {
@@ -25,6 +26,7 @@ router.put('/partidas/:id/ganador', actualizarGanador);
 router.get('/partidas/disponibles', obtenerPartidasDisponibles);
 router.get('/partidas/ultima', obtenerUltimaPartida);
 router.get('/partidas/estadisticas', obtenerEstadisticas);
+router.get('/partidas/ranking', obtenerRanking);
 
 // Jugadores
 router.post('/jugadores', agregarJugador);
