@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
   res.send('Servidor Luiki Kart activo 🚀');
 });
 
-// 🧠 Almacenamos el estado de los jugadores por partida
+// Almacenamos el estado de los jugadores por partida
 const estadoJugadoresGlobal = {};
 
 // WebSocket events
@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
     socket.to(room).emit('jugadorUnido', { idJugador });
   });
 
-  // ✅ Jugador marca que está listo
+  // Jugador marca que está listo
   socket.on('jugadoresListos', ({ idPartida, jugadores }) => {
     const room = `partida_${idPartida}`;
     estadoJugadoresGlobal[idPartida] = jugadores;
@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
     // Verificar si todos están listos
     const todosListos = Object.values(jugadores).every(val => val === true);
     if (todosListos) {
-      console.log(`🎉 Todos listos en ${room}`);
+      console.log(`Todos listos en ${room}`);
       io.to(room).emit('todosListos');
       // Se da un segundo para que todos reciban el evento.
       setTimeout(() => {}, 1000);
