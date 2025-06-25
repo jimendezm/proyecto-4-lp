@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import '../styles/GameConfig.css';
 import pista1Img from '../assets/pista1.png';
 import pista2Img from '../assets/pista2.png';
@@ -19,15 +20,21 @@ export default function GameConfig() {
   const [numJugadores, setNumJugadores] = useState(2);
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
-  
-    // Desestructuramos nickname e idJugador
   const { nickname, idJugador } = state || {};
+
+  const mostrarError = (mensaje) => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: mensaje,
+      confirmButtonColor: '#d33'
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // 1) Crear partida
       const resPartida = await fetch('http://localhost:3001/api/partidas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,18 +46,15 @@ export default function GameConfig() {
         })
       });
 
-      if (!resPartida.ok) throw new Error('Error al crear partida, Error:'+ resPartida.status);
+      if (!resPartida.ok)
+        throw new Error('Error al crear partida, Error: ' + resPartida.status);
 
-      
-
-      // 2) Obtener la última partida creada
       const resUltima = await fetch('http://localhost:3001/api/partidas/ultima');
       if (!resUltima.ok) throw new Error('No se pudo obtener la última partida');
 
       const ultimaPartida = await resUltima.json();
       const idPartida = ultimaPartida.id;
 
-      // 3) Asignar jugador a la partida
       const resAsignar = await fetch('http://localhost:3001/api/jugadores/asignar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,20 +64,19 @@ export default function GameConfig() {
         })
       });
 
-      // socket.emit("joinPartida", { idPartida: resPartida.id, idJugador });
-      if (!resAsignar.ok) throw new Error('Error al asignar jugador a la partida');
+      if (!resAsignar.ok)
+        throw new Error('Error al asignar jugador a la partida');
 
-      // 4) Redirigir (por ejemplo, al lobby)
+      socket.emit("joinPartida", { idPartida, idJugador });
+
       navigate('/lobby', { state: { idPartida, idJugador, nickname } });
-
     } catch (err) {
       console.error(err);
-      alert('No se pudo crear y asignar la partida. Intentá de nuevo.');
+      mostrarError('No se pudo crear y asignar la partida. Intentá de nuevo.');
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="config-page">

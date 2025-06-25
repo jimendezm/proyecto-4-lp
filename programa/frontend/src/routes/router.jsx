@@ -5,6 +5,7 @@ import Game from '../pages/Game';
 import Login from '../pages/Login';
 import ListGames from '../pages/ListGames';
 import Lobby from '../pages/Lobby';
+import Statistics from '../pages/Statistics';
 
 export function Router() {
     return (
@@ -15,6 +16,7 @@ export function Router() {
             <Route path="/game" element={<Game />} />
             <Route path="/unirse" element={<ListGames />} />
             <Route path="/lobby" element={<Lobby />} />
+            <Route path="/estadisticas" element={<Statistics />} />
         </Routes>
     );
 }
