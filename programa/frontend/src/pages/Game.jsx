@@ -59,8 +59,9 @@ export default function Game() {
   const [ raceStarted, setRaceStarted ] = useState(false);
   const moves = useRef([]);  // Here are stored player movements.
   const move = useRef('');  // Here is stored the current movement.
-  const location = useLocation();
-  console.log(location.state);
+
+  const emptyTrack = Array(25).fill(0).map(() => Array(25).fill('#ffffff'));
+  const [trackData, setTrackData] = useState(emptyTrack);
 
   const [jugadoresConColor, setJugadoresConColor] = useState([]);
   const [pistaSeleccionada, setPistaSeleccionada] = useState(null);
@@ -117,7 +118,6 @@ export default function Game() {
         user: idJugador,
         moves: moves.current
       });
-      console.log(moves.current);
       moves.current = [];
       move.current = '';
     });
@@ -151,7 +151,7 @@ export default function Game() {
 
       <div className="track-container">
         {pistaSeleccionada && (
-          
+          <TrackGrid gridData={trackData}/>
         )}
         <div className="overlay-grid">
           {jugadoresConColor.map(j => (
