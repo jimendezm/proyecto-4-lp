@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
   console.log('Jugador conectado:', socket.id);
 
   // Unirse a una partida
-  // 🎮 Alguien se une a una partida
+  // Alguien se une a una partida
   socket.on('joinPartida', ({ idPartida, idJugador }) => {
     const room = `partida_${idPartida}`;
     socket.join(room);

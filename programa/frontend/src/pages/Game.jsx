@@ -93,8 +93,15 @@ export default function Game() {
   const handleRaceStart = () => {
     setRaceStarted(true);
     document.addEventListener('keydown', (e) => {
-      move.current = e.code;
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].contains(e.code)) {
+        move.current = e.code;
+      }
     });
+    setInterval(() => {
+      if (move.current !== '' && moves.length < 3) {
+        moves.current = [ ...moves.current, move.current ];
+      }
+    }, 100);
   }
 
   return (
