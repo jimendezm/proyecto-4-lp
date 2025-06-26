@@ -101,7 +101,7 @@ export default function Lobby() {
             text: 'La partida va a comenzar.',
             confirmButtonColor: '#3085d6'
           }).then(() => {
-            navigate('/game', { state: { idPartida, jugadores } });
+            navigate('/game', { state: { idPartida, jugadores, idJugador } });
           });
         } catch (err) {
           console.error('Error al actualizar estado de la partida:', err);

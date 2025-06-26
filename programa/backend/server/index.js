@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes.js'; // Rutas REST
+import { setInterval } from 'timers';
 
 dotenv.config();
 
@@ -69,7 +70,14 @@ io.on('connection', (socket) => {
       io.to(room).emit('todosListos');
       // Se da un segundo para que todos reciban el evento.
       setTimeout(() => {}, 1000);
+      const intervalRef = setInterval(() => {
+        io.to(room).emit('requestMoves');
+      }, 500);
     }
+  });
+  
+  socket.on('receiveMoves', ({ gameId, user, moves }) => {
+    console.log(gameId, user, moves);
   });
 
   socket.on('disconnect', () => {

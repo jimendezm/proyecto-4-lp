@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import pista1Img from '../assets/pista1.png';
 import pista2Img from '../assets/pista2.png';
 import '../styles/Game.css';
+import { SocketContext } from './SocketContext';
 
 const colores = [
   '#e72020', '#4de32a', '#28cae1', '#f477dc', '#fbf230', '#a05ff5', '#ffa500', '#00ffff'
@@ -51,11 +52,14 @@ const StartCountdown = ({ onFinish }) => {
 };
 
 export default function Game() {
+  const socket = useContext(SocketContext);
   const { state } = useLocation();
-  const { idPartida } = state || {};
-  const { raceStarted, setRaceStarted } = useState(false);
+  const { idPartida, jugadores, idJugador } = state || {};
+  const [ raceStarted, setRaceStarted ] = useState(false);
   const moves = useRef([]);  // Here are stored player movements.
   const move = useRef('');  // Here is stored the current movement.
+  const location = useLocation();
+  console.log(location.state);
 
   const [jugadoresConColor, setJugadoresConColor] = useState([]);
   const [pistaSeleccionada, setPistaSeleccionada] = useState(null);
@@ -93,15 +97,28 @@ export default function Game() {
   const handleRaceStart = () => {
     setRaceStarted(true);
     document.addEventListener('keydown', (e) => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].contains(e.code)) {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
         move.current = e.code;
+      } else {
+        move.current = '';
       }
     });
-    setInterval(() => {
-      if (move.current !== '' && moves.length < 3) {
+    const intervalRef = setInterval(() => {
+      if (move.current !== '' && moves.current.length < 3) {
         moves.current = [ ...moves.current, move.current ];
       }
     }, 100);
+
+    socket.on('requestMoves', () => {
+      socket.emit('receiveMoves', {
+        gameId: idPartida,
+        user: idJugador,
+        moves: moves.current
+      });
+      console.log(moves.current);
+      moves.current = [];
+      move.current = '';
+    });
   }
 
   return (
