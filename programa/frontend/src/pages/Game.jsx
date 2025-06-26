@@ -4,6 +4,7 @@ import pista1Img from '../assets/pista1.png';
 import pista2Img from '../assets/pista2.png';
 import '../styles/Game.css';
 import { SocketContext } from './SocketContext';
+import TrackGrid from './TrackGrid.jsx'
 
 const colores = [
   '#e72020', '#4de32a', '#28cae1', '#f477dc', '#fbf230', '#a05ff5', '#ffa500', '#00ffff'
@@ -98,6 +99,7 @@ export default function Game() {
     setRaceStarted(true);
     document.addEventListener('keydown', (e) => {
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+        e.preventDefault();
         move.current = e.code;
       } else {
         move.current = '';
@@ -149,11 +151,7 @@ export default function Game() {
 
       <div className="track-container">
         {pistaSeleccionada && (
-          <img
-            src={pistas[pistaSeleccionada]}
-            alt={`Pista ${pistaSeleccionada}`}
-            className="track-image"
-          />
+          
         )}
         <div className="overlay-grid">
           {jugadoresConColor.map(j => (
