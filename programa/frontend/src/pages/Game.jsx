@@ -115,7 +115,7 @@ export default function Game() {
     socket.on('requestMoves', () => {
       socket.emit('receiveMoves', {
         gameId: idPartida,
-        user: idJugador,
+        player: idJugador,
         moves: moves.current
       });
       moves.current = [];

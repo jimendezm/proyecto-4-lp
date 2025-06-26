@@ -4,7 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes.js'; // Rutas REST
-import { setInterval } from 'timers';
+import { setInterval, setTimeout } from 'timers';
 import GameManager from '../models/gamemanager.js';
 
 dotenv.config();
@@ -93,21 +93,34 @@ io.on('connection', (socket) => {
       const gm = new GameManager();
       const game = gm.findGame(idPartida);
       game.addPlayersToTrack();
+      const mb = gm.addMovesBuffer(idPartida);
 
       io.to(room).emit('todosListos');
       // Se da un segundo para que todos reciban el evento.
       setTimeout(() => {}, 1000);
       const intervalRef = setInterval(() => {
         io.to(room).emit('requestMoves');
-      }, 500);
+        setTimeout(() => {}, 100);  // Wait to receive moves.
+
+        // Now, in mb are the moves received.
+        mb.movesLists.forEach(moveList => { // For every list of moves...
+          // Every moveList is a { player, moves }
+          moveList.moves.forEach(move => { // For the moves of a player...
+            game.updateState(moveList.player, move);
+          });
+
+        io.to(room).emit('newState', { grid: gm.trackMatrix });
+        });
+        mb.reset()
+
+      }, 400);  // 100 + 400 = 500 ms
     }
   });
 
-  socket.on('receiveMoves', ({ gameId, user, moves }) => {
-    console.log(gameId, user, moves);
+  socket.on('receiveMoves', ({ gameId, player, moves }) => {
     const gm = new GameManager();
-    const game = gm.findGame(gameId);
-
+    const mb = gm.findMovesBuffer(gameId);
+    mb.addMoves(player, moves);;
   });
 
   socket.on('disconnect', () => {
