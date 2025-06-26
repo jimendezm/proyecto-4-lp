@@ -15,4 +15,8 @@ export default class GameManager {
     this.games.push(new Game(roomName, id, type, track, numLaps, numPlayers));
     return this.games[this.games.length - 1]
   }
+
+  findGame(targetId) {
+    return this.games.find(game => game.id === targetId);
+  }
 }

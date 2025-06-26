@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
     const partida = partidas.find(p => p.id === idPartida);
 
     const gm = new GameManager();
-    const foundGame = gm.games.find(game => game.id === idPartida);
+    const foundGame = gm.findGame(idPartida);
     if (foundGame) {
       // If there's already a game with that id...
       foundGame.addPlayer(idJugador, nickname);
@@ -98,9 +98,12 @@ io.on('connection', (socket) => {
       }, 500);
     }
   });
-  
+
   socket.on('receiveMoves', ({ gameId, user, moves }) => {
     console.log(gameId, user, moves);
+    const gm = new GameManager();
+    const game = gm.findGame(gameId);
+
   });
 
   socket.on('disconnect', () => {
