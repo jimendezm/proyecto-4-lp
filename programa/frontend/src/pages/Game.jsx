@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import pista1Img from '../assets/pista1.png';
 import pista2Img from '../assets/pista2.png';
@@ -13,9 +13,49 @@ const pistas = {
   2: pista2Img,
 };
 
+// Shows a 3..2..1..GO message before starting the race.
+// onFinish: What to do when count finishes.
+const StartCountdown = ({ onFinish }) => {
+  const [count, setCount] = useState(3);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (count > 0) {
+      const timer = setTimeout(() => setCount(count - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (count === 0) {
+      setMessage('GO!');
+      const timer = setTimeout(() => {
+        setMessage('');
+        onFinish();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [count, onFinish]);
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '10rem',
+      fontWeight: 'bold',
+      color: 'white',
+      textShadow: '0 0 10px rgba(0,0,0,0.5)',
+      zIndex: 1000
+    }}>
+      {message || (count > 0 ? count : '')}
+    </div>
+  );
+};
+
 export default function Game() {
   const { state } = useLocation();
   const { idPartida } = state || {};
+  const { raceStarted, setRaceStarted } = useState(false);
+  const moves = useRef([]);  // Here are stored player movements.
+  const move = useRef('');  // Here is stored the current movement.
 
   const [jugadoresConColor, setJugadoresConColor] = useState([]);
   const [pistaSeleccionada, setPistaSeleccionada] = useState(null);
@@ -50,8 +90,17 @@ export default function Game() {
     }
   }, [idPartida]);
 
+  const handleRaceStart = () => {
+    setRaceStarted(true);
+    document.addEventListener('keydown', (e) => {
+      move.current = e.code;
+    });
+  }
+
   return (
     <div className="game-wrapper">
+      {!raceStarted && <StartCountdown onFinish={handleRaceStart()} />}
+
       <div className="sidebar">
         <h3>Jugadores</h3>
         <table className="jugadores-table">
