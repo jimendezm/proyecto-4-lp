@@ -22,22 +22,22 @@ export default class Game {
   getNewPlayerCoords() {
     switch (this.players.length) {
       case 0:
-        return { row: 10, col: 0 }
-        break;
-      case 1:
-        return { row: 11, col: 0 }
-        break;
-      case 2:
-        return { row: 12, col: 0 }
-        break;
-      case 3:
         return { row: 10, col: 1 }
         break;
-      case 4:
+      case 1:
         return { row: 11, col: 1 }
         break;
-      case 5:
+      case 2:
         return { row: 12, col: 1 }
+        break;
+      case 3:
+        return { row: 10, col: 2 }
+        break;
+      case 4:
+        return { row: 11, col: 2 }
+        break;
+      case 5:
+        return { row: 12, col: 2 }
         break;
       default:
         break;
@@ -58,4 +58,17 @@ export default class Game {
     this.trackMatrix.forEach(e => console.log(e));
   }
 
+  // Applies a move to a player only if possible. Returns new track matrix data.
+  // Move is: 'ArrowUp', 'ArrowDown', 'ArrowLeft' or 'ArrowRight'.
+  getNewState(player, move) {
+    const { row, col } = player.coords;
+    switch (move) {
+      case 'ArrowUp':
+        if (this.trackMatrix[row][col])
+        break;
+    
+      default:
+        break;
+    }
+  }
 }
