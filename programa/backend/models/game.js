@@ -12,7 +12,7 @@ export default class Game {
     this.winner = null;
     this.players = [];
 
-    // The server is started at server/index.js
+    // In the track, 0 is a wall, 1 is a path, and numbers above 1 are players.
     this.trackMatrix = fs.readFileSync(`./tracks/track${track}.txt`, 'utf-8')
       .split('\n')  // get rows.
       .map(row => row.split(' ').map(Number));  // Number parses to Number type.
@@ -58,15 +58,37 @@ export default class Game {
     this.trackMatrix.forEach(e => console.log(e));
   }
 
-  // Applies a move to a player only if possible. Returns new track matrix data.
+  // Puts a 0 in 'from' and a 'value' in 'to'.
+  applyMove(matrix, from, to, value) {
+    matrix[from.row][from.col] = 0;
+    matrix[to.row][to.col] = value;
+  }
+
+  // Applies a move to a player only if possible.
   // Move is: 'ArrowUp', 'ArrowDown', 'ArrowLeft' or 'ArrowRight'.
   getNewState(player, move) {
     const { row, col } = player.coords;
     switch (move) {
       case 'ArrowUp':
-        if (this.trackMatrix[row][col])
+        if (this.trackMatrix[row - 1][col] === 1) {  // Empty cell.
+          this.applyMove(this.trackMatrix, player.coords, { row: row - 1, col: col });
+        }
         break;
-    
+      case 'ArrowDown':
+        if (this.trackMatrix[row + 1][col] === 1) {  // Empty cell.
+          this.applyMove(this.trackMatrix, player.coords, { row: row + 1, col: col });
+        }
+        break;
+      case 'ArrowLeft':
+        if (this.trackMatrix[row][col - 1] === 1) {  // Empty cell.
+          this.applyMove(this.trackMatrix, player.coords, { row: row, col: col - 1 });
+        }
+        break;
+      case 'ArrowRight':
+        if (this.trackMatrix[row][col + 1] === 1) {  // Empty cell.
+          this.applyMove(this.trackMatrix, player.coords, { row: row, col: col + 1 });
+        }
+        break;
       default:
         break;
     }
