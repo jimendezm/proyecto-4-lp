@@ -1,4 +1,4 @@
-import { Player } from './player.js';
+import Player from './player.js';
 
 export default class Game {
   constructor(roomName, id, type, track, numLaps, numPlayers) {
@@ -13,6 +13,6 @@ export default class Game {
   }
 
   addPlayer(id, nickname) {
-    players.push(new Player(id, nickname));
+    this.players.push(new Player(id, nickname));
   }
 }

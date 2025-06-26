@@ -57,7 +57,7 @@ export default function Lobby() {
     };
 
     fetchData();
-    socket.emit('joinPartida', { idPartida, idJugador });
+    // socket.emit('joinPartida', { idPartida, idJugador });
 
     socket.on('jugadorUnido', async ({ idJugador: nuevo }) => {
       try {

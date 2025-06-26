@@ -34,6 +34,7 @@ export const actualizarGanador = async (req, res) => {
   }
 };
 
+// en espera
 export const obtenerPartidasDisponibles = async (req, res) => {
   try {
     const [rows] = await pool.query('CALL ObtenerPartidasDisponibles()');
@@ -43,6 +44,7 @@ export const obtenerPartidasDisponibles = async (req, res) => {
   }
 };
 
+// en proceso
 export const obtenerPartidas = async (req, res) => {
   try {
     const [rows] = await pool.query('CALL ObtenerPartidas()');

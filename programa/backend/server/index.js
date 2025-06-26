@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes.js'; // Rutas REST
 import { setInterval } from 'timers';
+import GameManager from '../models/gamemanager.js';
 
 dotenv.config();
 
@@ -40,10 +41,32 @@ io.on('connection', (socket) => {
 
   // Unirse a una partida
   // Alguien se une a una partida
-  socket.on('joinPartida', ({ idPartida, idJugador }) => {
+  socket.on('joinPartida', async ({ idPartida, idJugador, nickname }) => {
     const room = `partida_${idPartida}`;
     socket.join(room);
     console.log(`Jugador ${idJugador} se unió a ${room}`);
+
+    const resPartidas = await fetch('http://localhost:3001/api/partidas/disponibles');
+    const partidas = await resPartidas.json();
+    const partida = partidas.find(p => p.id === idPartida);
+
+    const gm = new GameManager();
+    const foundGame = gm.games.find(game => game.id === idPartida);
+    if (foundGame) {
+      // If there's already a game with that id...
+      foundGame.addPlayer(idJugador, nickname);
+    } else {
+      const newGame = gm.addGame(
+        room,
+        idPartida,
+        partida.tipo,
+        partida.pista,
+        partida.numVueltas,
+        partida.numJugadores
+      );
+      newGame.addPlayer(idJugador, nickname);
+    }
+    console.log(gm.games);
 
     // Enviar el estado actual de los jugadores al nuevo jugador
     const estados = estadoJugadoresGlobal[idPartida] || {};

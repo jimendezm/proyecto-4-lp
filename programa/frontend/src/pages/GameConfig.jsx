@@ -67,7 +67,7 @@ export default function GameConfig() {
       if (!resAsignar.ok)
         throw new Error('Error al asignar jugador a la partida');
 
-      socket.emit("joinPartida", { idPartida, idJugador });
+      socket.emit("joinPartida", { idPartida, idJugador, nickname });
 
       navigate('/lobby', { state: { idPartida, idJugador, nickname } });
     } catch (err) {
