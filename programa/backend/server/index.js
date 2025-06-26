@@ -66,7 +66,6 @@ io.on('connection', (socket) => {
       );
       newGame.addPlayer(idJugador, nickname);
     }
-    console.log(gm.games);
 
     // Enviar el estado actual de los jugadores al nuevo jugador
     const estados = estadoJugadoresGlobal[idPartida] || {};
@@ -90,6 +89,11 @@ io.on('connection', (socket) => {
     const todosListos = Object.values(jugadores).every(val => val === true);
     if (todosListos) {
       console.log(`Todos listos en ${room}`);
+
+      const gm = new GameManager();
+      const game = gm.findGame(idPartida);
+      game.addPlayersToTrack();
+
       io.to(room).emit('todosListos');
       // Se da un segundo para que todos reciban el evento.
       setTimeout(() => {}, 1000);

@@ -12,9 +12,11 @@ export default class Game {
     this.winner = null;
     this.players = [];
 
-    this.trackMatrix = fs.readFileSync(`../tracks/track${track}.txt`, 'utf-8')
+    // The server is started at server/index.js
+    this.trackMatrix = fs.readFileSync(`./tracks/track${track}.txt`, 'utf-8')
       .split('\n')  // get rows.
-      .map(row => row.split(' ').map(Number))  // Number parses to Number type.
+      .map(row => row.split(' ').map(Number));  // Number parses to Number type.
+    this.trackMatrix.pop();  // The last element is an empty space.
   }
 
   getNewPlayerCoords() {
@@ -47,5 +49,13 @@ export default class Game {
     this.players.push(new Player(id, nickname, cs.row, cs.col));
   }
 
-  getState()
+  // Only to initialize positions.
+  addPlayersToTrack() {
+    this.players.forEach(p => {
+      // +2 to start at 2. 0 and 1 are reserved for paths and walls.
+      this.trackMatrix[p.coords.row][p.coords.col] = p.id + 2;
+    })
+    this.trackMatrix.forEach(e => console.log(e));
+  }
+
 }
