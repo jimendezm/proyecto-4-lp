@@ -66,7 +66,7 @@ export default class Game {
 
   // Applies a move to a player only if possible.
   // Move is: 'ArrowUp', 'ArrowDown', 'ArrowLeft' or 'ArrowRight'.
-  updateState(player, move) {
+  getNewState(player, move) {
     const { row, col } = player.coords;
     switch (move) {
       case 'ArrowUp':
